@@ -1,23 +1,17 @@
 FROM ubuntu:18.04
 
-LABEL maintainer "Richard Regeer" \
-      email="rich2309@gmail.com"
 
 RUN apt-get update \
-      && apt-get -y install curl unzip \
-      && curl -O https://downloads.rclone.org/rclone-current-linux-amd64.zip \
-      && unzip rclone-current-linux-amd64.zip \
-      && cp rclone-*-linux-amd64/rclone /usr/bin/ \
+      && apt-get -y install curl unzip node npm \
+      && curl -O https://downloads.rclone.org/rclone-current-linux-arm.zip \
+      && unzip rclone-current-linux-arm.zip \
+      && cp rclone-*-linux-arm/rclone /usr/bin/ \
       && chown root:root /usr/bin/rclone \
       && chmod 755 /usr/bin/rclone \
       && apt-get clean \
       && rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/* /rclone-current-linux-amd64.zip
 
-ENV NODE_VERSION 10.15.3
 
-RUN curl -LOk https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz \
-      && tar -C /usr/local --strip-components 1 -xzf node-v$NODE_VERSION-linux-x64.tar.gz \
-      && rm -rf /node-v$NODE_VERSION-linux-x64.tar.gz
 
 COPY ./package.json /usr/local/bin/google-sync/package.json
 COPY ./package-lock.json /usr/local/bin/google-sync/package-lock.json
